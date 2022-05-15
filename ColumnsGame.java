@@ -20,9 +20,10 @@ public class ColumnsGame {
 
 	SingleLinkedList column1 = new SingleLinkedList();
 	SingleLinkedList column2 = new SingleLinkedList();
-	SingleLinkedList column3 = new SingleLinkedList();
+	SingleLinkedList column3 = new SingleLinkedList();		// Creating Columns
 	SingleLinkedList column4 = new SingleLinkedList();
 	SingleLinkedList column5 = new SingleLinkedList();
+	
 	DoubleLinkedList dll_scores = new DoubleLinkedList();
 	DoubleLinkedList dll_names = new DoubleLinkedList();
 	DoubleLinkedList dll_highscore = new DoubleLinkedList();
@@ -52,7 +53,7 @@ public class ColumnsGame {
 		  
 		  else if (column2.size() < 6) {
 		  
-		  column2.add(cards[randomCardIndex]); }
+		  column2.add(cards[randomCardIndex]); }		// Adding cards to columns randomly until each one has 6 cards
 		  
 		  else if (column3.size() < 6) {
 		  
@@ -66,25 +67,14 @@ public class ColumnsGame {
 		  
 		  column5.add(cards[randomCardIndex]); }
 		  
-		  else { box.add(cards[randomCardIndex]); }
+		  else { box.add(cards[randomCardIndex]); }		// Adding remaining cards to box
 		  
 		  
 		  
 		  cards = removeItemFromArray(cards, randomCardIndex);
 		  
 		  }
-		  
-		  
-			/*
-			 * box.printSingleLinkedList(); System.out.println();
-			 * column1.printSingleLinkedList(); System.out.println();
-			 * column2.printSingleLinkedList(); System.out.println();
-			 * column3.printSingleLinkedList(); System.out.println();
-			 * column4.printSingleLinkedList(); System.out.println();
-			 * column5.printSingleLinkedList();
-			 */
-		  
-		  
+
 		  
 		  printGameScreen(cn);
 		 
@@ -102,6 +92,7 @@ public class ColumnsGame {
 
 	}
 
+	// Function for removing item from array
 	private int[] removeItemFromArray(int[] array, int indexOfTheElementToBeDeleted) {
 
 		int[] tempArray = new int[array.length - 1];
@@ -122,6 +113,7 @@ public class ColumnsGame {
 		return array;
 	}
 
+	// Function for printing game screen
 	private void printGameScreen(Console console) {
 
 		column1.printSingleLinkedList("C1", 7, 3);

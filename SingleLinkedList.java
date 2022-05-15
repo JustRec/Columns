@@ -27,6 +27,7 @@ public class SingleLinkedList {
 
     }
 
+    // Function for printing single linked list with respect to column name and cursor position
     public void printSingleLinkedList(String columnNumber, int cursorXPosition, int cursorYPosition) {
 
         cn.getTextWindow().setCursorPosition(cursorXPosition,cursorYPosition);
