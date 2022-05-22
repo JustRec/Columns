@@ -3,7 +3,6 @@ import enigma.core.Enigma;
 import java.io.Console;
 
 public class SingleLinkedList {
-    enigma.console.Console cn = Enigma.getConsole("Star Trek Warp Wars");
 
     SingleLinkedListNode head;
 
@@ -28,13 +27,13 @@ public class SingleLinkedList {
     }
 
     // Function for printing single linked list with respect to column name and cursor position
-    public void printSingleLinkedList(String columnNumber, int cursorXPosition, int cursorYPosition) {
+    public void printSingleLinkedList(enigma.console.Console console, String columnNumber, int cursorXPosition, int cursorYPosition) {
 
-        cn.getTextWindow().setCursorPosition(cursorXPosition,cursorYPosition);
-        cn.getTextWindow().output(columnNumber);
+        console.getTextWindow().setCursorPosition(cursorXPosition,cursorYPosition);
+        console.getTextWindow().output(columnNumber);
         cursorYPosition+=1;
-        cn.getTextWindow().setCursorPosition(cursorXPosition,cursorYPosition);
-        cn.getTextWindow().output("--");
+        console.getTextWindow().setCursorPosition(cursorXPosition,cursorYPosition);
+        console.getTextWindow().output("--");
         cursorYPosition+=1;
 
 
@@ -48,8 +47,8 @@ public class SingleLinkedList {
 
             while (tempNode != null) {
 
-                cn.getTextWindow().setCursorPosition(cursorXPosition,cursorYPosition);
-                cn.getTextWindow().output(String.valueOf((int)tempNode.getData()));
+                console.getTextWindow().setCursorPosition(cursorXPosition,cursorYPosition);
+                console.getTextWindow().output(String.valueOf((int)tempNode.getData()));
                 cursorYPosition+=1;
 
                 tempNode = tempNode.getLink();

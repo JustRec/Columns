@@ -14,7 +14,9 @@ import java.util.Scanner;
 
 public class ColumnsGame {
 
-	enigma.console.Console cn = Enigma.getConsole("Star Trek Warp Wars");
+	enigma.console.Console cn = Enigma.getConsole("Columns");
+
+	MultiLinkedList gameScreen = new MultiLinkedList();
 
 	SingleLinkedList box = new SingleLinkedList();
 
@@ -23,7 +25,7 @@ public class ColumnsGame {
 	SingleLinkedList column3 = new SingleLinkedList();		// Creating Columns
 	SingleLinkedList column4 = new SingleLinkedList();
 	SingleLinkedList column5 = new SingleLinkedList();
-	
+
 	DoubleLinkedList dll_scores = new DoubleLinkedList();
 	DoubleLinkedList dll_names = new DoubleLinkedList();
 	DoubleLinkedList dll_highscore = new DoubleLinkedList();
@@ -41,42 +43,57 @@ public class ColumnsGame {
 
 	public void gameRun() {
 
-		
-		  while (cards.length > 0){
-		  
-		  
-		  randomCardIndex = rnd.nextInt(cards.length);
-		  
-		  if (column1.size() < 6) {
-		  
-		  column1.add(cards[randomCardIndex]); }
-		  
-		  else if (column2.size() < 6) {
-		  
-		  column2.add(cards[randomCardIndex]); }		// Adding cards to columns randomly until each one has 6 cards
-		  
-		  else if (column3.size() < 6) {
-		  
-		  column3.add(cards[randomCardIndex]); }
-		  
-		  else if (column4.size() < 6) {
-		  
-		  column4.add(cards[randomCardIndex]); }
-		  
-		  else if (column5.size() < 6) {
-		  
-		  column5.add(cards[randomCardIndex]); }
-		  
-		  else { box.add(cards[randomCardIndex]); }		// Adding remaining cards to box
-		  
-		  
-		  
-		  cards = removeItemFromArray(cards, randomCardIndex);
-		  
-		  }
 
+		gameScreen.addColumn("C1");
+		gameScreen.addColumn("C2");
+		gameScreen.addColumn("C3");
+		gameScreen.addColumn("C4");
+		gameScreen.addColumn("C5");
+
+
+
+
+		
+		while (cards.length > 0){
 		  
-		  printGameScreen(cn);
+
+			randomCardIndex = rnd.nextInt(cards.length);
+
+			if (column1.size() < 6) {
+
+				gameScreen.addCard("C1", cards[randomCardIndex]);
+				column1.add(cards[randomCardIndex]); }
+
+			else if (column2.size() < 6) {
+
+				gameScreen.addCard("C2", cards[randomCardIndex]);
+				column2.add(cards[randomCardIndex]); }		// Adding cards to columns randomly until each one has 6 cards
+
+			else if (column3.size() < 6) {
+
+				gameScreen.addCard("C3", cards[randomCardIndex]);
+				column3.add(cards[randomCardIndex]); }
+
+			else if (column4.size() < 6) {
+
+				gameScreen.addCard("C4", cards[randomCardIndex]);
+				column4.add(cards[randomCardIndex]); }
+
+			else if (column5.size() < 6) {
+
+				gameScreen.addCard("C5", cards[randomCardIndex]);
+				column5.add(cards[randomCardIndex]); }
+
+			else { box.add(cards[randomCardIndex]); }		// Adding remaining cards to box
+
+
+
+			cards = removeItemFromArray(cards, randomCardIndex);
+
+		}
+
+
+		printGameScreen(cn);
 		 
 
 		reading_scores(dll_scores, "highscore.txt");
@@ -116,11 +133,7 @@ public class ColumnsGame {
 	// Function for printing game screen
 	private void printGameScreen(Console console) {
 
-		column1.printSingleLinkedList("C1", 7, 3);
-		column2.printSingleLinkedList("C2", 11, 3);
-		column3.printSingleLinkedList("C3", 15, 3);
-		column4.printSingleLinkedList("C4", 19, 3);
-		column5.printSingleLinkedList("C5", 23, 3);
+		gameScreen.printMultiLinkedList(console);
 
 		console.getTextWindow().setCursorPosition(30, 3);
 		console.getTextWindow().output("Transfer: " + transferCount);
@@ -143,6 +156,8 @@ public class ColumnsGame {
 
 		console.getTextWindow().setCursorPosition(30, 11);
 		console.getTextWindow().output("+--+");
+
+		//box.printSingleLinkedList("Box", 50, 3);
 
 	}
 
