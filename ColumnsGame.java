@@ -246,8 +246,8 @@ public class ColumnsGame {
 	private Color currentTileColor(){
 		if(cursor.getX() == selected_column && cursor.getY() >= selected_index)
 			return Color.red;
-		else if(cursor.getX() == target_column)
-			return Color.blue;
+		/*else if(cursor.getX() == target_column)
+			return Color.blue;*/
 		return Color.white;
 	}
 
@@ -288,7 +288,7 @@ public class ColumnsGame {
 
 	private void Transfer(){
 		ColumnNode temp = gameScreen.head;
-		Stack stack = new Stack(10);
+		Queue queue = new Queue(10);
 
 		while (temp != null){
 			String column = "C" + selected_column;
@@ -298,7 +298,7 @@ public class ColumnsGame {
 					temp2 = temp2.getNext();
 				}
 				while(temp2 != null){
-					stack.push(temp2.getCardName());
+					queue.enqueue(temp2.getCardName());
 					temp2 = temp2.getNext();
 				}
 				break;
@@ -313,13 +313,14 @@ public class ColumnsGame {
 				CardNode temp2 = temp.getRight();
 				while(temp2 != null)
 					temp2 = temp2.getNext();
-				while(!stack.isEmpty()){
-					gameScreen.addCard("C" + target_column, (Integer)stack.pop());
+				while(!queue.isEmpty()){
+					gameScreen.addCard("C" + target_column, (Integer)queue.dequeue());
 				}
 				break;
 			}
 			temp = temp.getDown();
 		}
+		printGameScreen(cn);
 	}
 
 	// Function for removing item from array
