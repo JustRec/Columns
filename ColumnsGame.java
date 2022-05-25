@@ -1,9 +1,11 @@
 import enigma.console.Console;
-import enigma.core.Enigma;
 import enigma.console.TextAttributes;
-import java.awt.Color;
+import enigma.core.Enigma;
+import enigma.event.TextMouseEvent;
+import enigma.event.TextMouseListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.Color;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,7 +16,7 @@ import java.util.Scanner;
 
 public class ColumnsGame {
 
-	enigma.console.Console cn = Enigma.getConsole("Columns");
+	enigma.console.Console cn = Enigma.getConsole("Columns", 70, 25, 17);
 
 	MultiLinkedList gameScreen = new MultiLinkedList();
 
@@ -34,6 +36,19 @@ public class ColumnsGame {
 	int playerScore = 0;
 	int boxNumber = 0;
 
+	Cursor cursor = new Cursor();
+
+	private int mousepr;
+	private int mousex;
+	private int mousey;
+	private int keypr;
+	private int rkey;
+
+	private int selected_column = 0;
+	private int selected_index = 0;
+	private int target_column = 0;
+
+	private Color PURPLE = new Color(189, 147, 255);
 	Random rnd = new Random();
 
 	int randomCardIndex;
@@ -41,7 +56,7 @@ public class ColumnsGame {
 	int[] cards = new int[] { 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6,
 			7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10 };
 
-	public void gameRun() {
+	public void gameRun(){
 
 
 		gameScreen.addColumn("C1");
@@ -94,14 +109,8 @@ public class ColumnsGame {
 
 
 		printGameScreen(cn);
-		gameScreen.deleteNode(1,1);
-		gameScreen.deleteNode(2,3);
-		gameScreen.deleteNode(4,3);
-		gameScreen.deleteNode(2,2);
-		gameScreen.deleteNode(3,4);
-		printGameScreen(cn);
-
-		 
+		
+		Play();
 
 		reading_scores(dll_scores, "highscore.txt");
 		reading_names(dll_names, "highscore.txt");
@@ -114,6 +123,216 @@ public class ColumnsGame {
 		}
 		writing(dll_highscore,"highscore.txt");
 
+	}
+
+	private void Play(){
+		TextMouseListener tmlistener = new TextMouseListener() { // Mouse event listener
+			
+            public void mouseClicked(TextMouseEvent arg0) {
+            }
+            public void mousePressed(TextMouseEvent arg0) {
+                if (mousepr == 0) {
+                    mousepr = 1;
+                    mousex = arg0.getX();
+                    mousey = arg0.getY();
+                }
+            }
+            public void mouseReleased(TextMouseEvent arg0) {
+            }
+        };
+        cn.getTextWindow().addTextMouseListener(tmlistener);
+
+        KeyListener klistener = new KeyListener() { // Keyboard event listener
+            public void keyTyped(KeyEvent e) {}
+            public void keyPressed(KeyEvent e) {
+                if (keypr == 0) {
+                    keypr = 1;
+                    rkey = e.getKeyCode();
+                }
+            }
+            public void keyReleased(KeyEvent e) {
+            }
+        };
+        cn.getTextWindow().addKeyListener(klistener);
+		updateCursor(cursor.getX(), cursor.getY(), PURPLE);
+
+		while(true){
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
+
+			if(keypr == 1){
+				if(rkey == KeyEvent.VK_RIGHT){
+					updateCursor(cursor.getX(), cursor.getY(), currentTileColor());
+					cursor.Move(1);
+					updateCursor(cursor.getX(), cursor.getY(), PURPLE);
+				}
+				else if(rkey == KeyEvent.VK_LEFT){
+					updateCursor(cursor.getX(), cursor.getY(), currentTileColor());
+					cursor.Move(2);
+					updateCursor(cursor.getX(), cursor.getY(), PURPLE);
+				}
+				else if(rkey == KeyEvent.VK_UP){
+					updateCursor(cursor.getX(), cursor.getY(), currentTileColor());
+					cursor.Move(3);
+					updateCursor(cursor.getX(), cursor.getY(), PURPLE);
+				}
+				else if(rkey == KeyEvent.VK_DOWN){
+					ColumnNode temp = gameScreen.head;
+
+					while (temp != null){
+						String column = "C" + cursor.getX();
+						if (column.equals(temp.getColumnName())){
+							CardNode temp2 = temp.getRight();
+							if(temp2 != null){
+								int element = 1;
+
+								while(temp2.getNext() != null){
+									if(element == cursor.getY()){
+										updateCursor(cursor.getX(), cursor.getY(), currentTileColor());
+										cursor.Move(4);
+										updateCursor(cursor.getX(), cursor.getY(), PURPLE);
+										break;
+									}
+									temp2 = temp2.getNext();
+									element++;
+								}
+							}
+							break;
+						}
+						temp = temp.getDown();
+					}
+				}
+
+				else if(rkey == KeyEvent.VK_Z){
+					if(selected_column != 0){
+						for (int i = 1; i < 10; i++) {
+							if(!updateCursor(selected_column, i, Color.WHITE))
+								break;
+						}
+					}
+					selected_column = cursor.getX();
+					selected_index = cursor.getY();
+					for (int i = cursor.getY(); i < 10; i++) {
+						if(!updateCursor(cursor.getX(), i, Color.red))
+							break;
+					}
+					
+					if(cursor.getY() == 1)
+						cursor.setX(cursor.getX() - 1);
+					else{
+						cursor.setY(cursor.getY() - 1);
+					}
+					if(cursor.getX() == 0)
+						cursor.setX(cursor.getX() + 2);
+					
+					updateCursor(cursor.getX(), cursor.getY(), PURPLE);
+				}
+
+				else if(rkey == KeyEvent.VK_X){
+					target_column = cursor.getX();
+					if(selected_column != target_column && selected_column != 0){
+						Transfer();
+						selected_column = 0;
+						target_column = 0;
+					}
+				}
+				else if(rkey == KeyEvent.VK_B){}
+
+			}
+			keypr = 0;
+			
+		}
+	}
+
+	private Color currentTileColor(){
+		if(cursor.getX() == selected_column && cursor.getY() >= selected_index)
+			return Color.red;
+		/*else if(cursor.getX() == target_column)
+			return Color.blue;*/
+		return Color.white;
+	}
+
+	private int Search(String column, int index){
+
+		ColumnNode temp = gameScreen.head;
+		CardNode temp2 = temp.getRight();
+		while (temp != null){
+			if (column.equals(temp.getColumnName())){
+				for (int i = 0; i < index - 1; i++) {
+					temp2 = temp2.getNext();
+				}
+				break;
+			}
+			temp = temp.getDown();
+			temp2 = temp.getRight();
+		}
+		if(temp2 == null)
+			return 404;
+		return (Integer) temp2.getCardName();
+	}
+
+	private boolean updateCursor(int column, int index, Color color){
+		int number = Search("C" + column, index);
+		if(number == 404)
+			return false;
+		int x = 7 + ((column - 1) * 3);
+		int y = 5 + (index - 1 );
+
+		TextAttributes ta = new TextAttributes(color);
+		cn.setTextAttributes(ta);
+		cn.getTextWindow().setCursorPosition(x, y);
+		System.out.print(number);
+		ta = new TextAttributes(Color.white, Color.BLACK);
+		cn.setTextAttributes(ta);
+		return true;
+	}
+
+	private void Transfer(){
+		ColumnNode temp = gameScreen.head;
+		int last_node = 0;
+		Queue queue = new Queue(10);
+
+		while (temp != null){
+			String column = "C" + selected_column;
+			if (column.equals(temp.getColumnName())){
+				CardNode temp2 = temp.getRight();
+				for (int i = 0; i < selected_index - 1; i++) {
+					temp2 = temp2.getNext();
+				}
+				last_node = temp2.getCardName();
+				while(temp2 != null){
+					queue.enqueue(temp2.getCardName());
+					temp2 = temp2.getNext();
+				}
+				break;
+			}
+			temp = temp.getDown();
+		}
+		temp = gameScreen.head;
+
+		while (temp != null){
+			String column = "C" + target_column;
+			int previous = 0;
+			if (column.equals(temp.getColumnName())){
+				CardNode temp2 = temp.getRight();
+				while(temp2 != null){
+					previous = temp2.getCardName();
+					temp2 = temp2.getNext();
+				}
+				if(Math.abs(last_node - previous) == 1){
+					while(!queue.isEmpty()){
+						gameScreen.addCard("C" + target_column, (Integer)queue.dequeue());
+					}
+					break;
+				}
+				
+			}
+			temp = temp.getDown();
+		}
+		printGameScreen(cn);
 	}
 
 	// Function for removing item from array
@@ -139,8 +358,6 @@ public class ColumnsGame {
 
 	// Function for printing game screen
 	private void printGameScreen(Console console) {
-
-		deleteScreen();
 
 		gameScreen.printMultiLinkedList(console);
 
@@ -239,17 +456,6 @@ public class ColumnsGame {
 			System.out.println(e.getMessage());
 		}
 
-	}
-
-	private void deleteScreen() {
-
-
-		for (int i = 0; i < 90; i++) {
-			cn.getTextWindow().setCursorPosition(0,i);
-			cn.getTextWindow().output("\t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t");
-		}
-
-		cn.getTextWindow().setCursorPosition(0,0);
 	}
 
 	

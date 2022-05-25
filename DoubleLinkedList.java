@@ -78,7 +78,7 @@ public class DoubleLinkedList {
 	public int size() {
 		int count = 0;
 		if(head == null)
-			System.out.println("List is empty");
+			return count;
 		else {
 			DoubleLinkedListNode temp = head;
 			while(temp != null) {
