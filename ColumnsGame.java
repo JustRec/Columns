@@ -359,6 +359,8 @@ public class ColumnsGame {
 	// Function for printing game screen
 	private void printGameScreen(Console console) {
 
+		deleteScreen();
+		
 		gameScreen.printMultiLinkedList(console);
 
 		console.getTextWindow().setCursorPosition(30, 3);
@@ -456,6 +458,17 @@ public class ColumnsGame {
 			System.out.println(e.getMessage());
 		}
 
+	}
+
+	private void deleteScreen() {
+
+
+		for (int i = 0; i < 90; i++) {
+			cn.getTextWindow().setCursorPosition(0,i);
+			cn.getTextWindow().output("\t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t");
+		}
+
+		cn.getTextWindow().setCursorPosition(0,0);
 	}
 
 	
