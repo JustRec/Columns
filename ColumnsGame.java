@@ -232,8 +232,11 @@ public class ColumnsGame {
 
 				else if(rkey == KeyEvent.VK_X){
 					target_column = cursor.getX();
-					if(selected_column != target_column)
+					if(selected_column != target_column && selected_column != 0){
 						Transfer();
+						selected_column = 0;
+						target_column = 0;
+					}
 				}
 				else if(rkey == KeyEvent.VK_B){}
 
@@ -288,6 +291,7 @@ public class ColumnsGame {
 
 	private void Transfer(){
 		ColumnNode temp = gameScreen.head;
+		int last_node = 0;
 		Queue queue = new Queue(10);
 
 		while (temp != null){
@@ -297,6 +301,7 @@ public class ColumnsGame {
 				for (int i = 0; i < selected_index - 1; i++) {
 					temp2 = temp2.getNext();
 				}
+				last_node = temp2.getCardName();
 				while(temp2 != null){
 					queue.enqueue(temp2.getCardName());
 					temp2 = temp2.getNext();
@@ -309,14 +314,20 @@ public class ColumnsGame {
 
 		while (temp != null){
 			String column = "C" + target_column;
+			int previous = 0;
 			if (column.equals(temp.getColumnName())){
 				CardNode temp2 = temp.getRight();
-				while(temp2 != null)
+				while(temp2 != null){
+					previous = temp2.getCardName();
 					temp2 = temp2.getNext();
-				while(!queue.isEmpty()){
-					gameScreen.addCard("C" + target_column, (Integer)queue.dequeue());
 				}
-				break;
+				if(Math.abs(last_node - previous) == 1){
+					while(!queue.isEmpty()){
+						gameScreen.addCard("C" + target_column, (Integer)queue.dequeue());
+					}
+					break;
+				}
+				
 			}
 			temp = temp.getDown();
 		}
