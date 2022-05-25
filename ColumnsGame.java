@@ -94,6 +94,13 @@ public class ColumnsGame {
 
 
 		printGameScreen(cn);
+		gameScreen.deleteNode(1,1);
+		gameScreen.deleteNode(2,3);
+		gameScreen.deleteNode(4,3);
+		gameScreen.deleteNode(2,2);
+		gameScreen.deleteNode(3,4);
+		printGameScreen(cn);
+
 		 
 
 		reading_scores(dll_scores, "highscore.txt");
@@ -132,6 +139,8 @@ public class ColumnsGame {
 
 	// Function for printing game screen
 	private void printGameScreen(Console console) {
+
+		deleteScreen();
 
 		gameScreen.printMultiLinkedList(console);
 
@@ -230,6 +239,17 @@ public class ColumnsGame {
 			System.out.println(e.getMessage());
 		}
 
+	}
+
+	private void deleteScreen() {
+
+
+		for (int i = 0; i < 90; i++) {
+			cn.getTextWindow().setCursorPosition(0,i);
+			cn.getTextWindow().output("\t \t \t \t \t \t \t \t \t \t \t \t \t \t \t \t");
+		}
+
+		cn.getTextWindow().setCursorPosition(0,0);
 	}
 
 	

@@ -106,4 +106,31 @@ public class MultiLinkedList {
         }
 
     }
+
+    public void deleteNode(int columnIndex, int cardIndex) {
+
+        ColumnNode tempNode = head;
+
+
+        for (int i = 0; i < columnIndex; i++) {
+
+            tempNode = tempNode.getDown();
+
+        }
+
+        CardNode tempNode2 = tempNode.getRight();
+        CardNode previousNode = null;
+
+        for (int i = 0; i < cardIndex; i++) {
+
+            previousNode = tempNode2;
+            tempNode2 = tempNode2.getNext();
+
+
+        }
+
+        previousNode.setNext(tempNode2.getNext());
+
+
+    }
 }
