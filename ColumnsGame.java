@@ -36,8 +36,13 @@ public class ColumnsGame {
 	int playerScore = 0;
 	int boxNumber = 0;
 
+	int setCount = 0;
+
 	boolean isBoxNumberSelected = false;
 	boolean isBoxNumberPlaced = true;
+
+	boolean isGameContinue = true;
+
 	CardNode boxCard;
 
 	Cursor cursor = new Cursor();
@@ -131,7 +136,7 @@ public class ColumnsGame {
         cn.getTextWindow().addKeyListener(klistener);
 		updateCursor(cursor.getX(), cursor.getY(), PURPLE);
 
-		while(true){
+		while(isGameContinue){
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e1) {
@@ -405,7 +410,11 @@ public class ColumnsGame {
 
 			}
 			keypr = 0;
-			
+
+			if (setCount == 5) {
+
+				isGameContinue = false;
+			}
 		}
 	}
 	private boolean isMoveLegal(int modifX, int modifY){
@@ -435,12 +444,14 @@ public class ColumnsGame {
 
 			if (gameScreen.columnSize(i) == 10) {
 
-				if (gameScreen.isColumnOrderedSet(i)) {
+				if (gameScreen.isColumnOrderedSet(i)) {						// Deleting columns if there is set
 
 					for (int j = 0; j < 10; j++) {
 
 						gameScreen.deleteNode(i+1, 1);
 					}
+
+					playerScore += 1000;
 				}
 			}
 		}
@@ -479,7 +490,7 @@ public class ColumnsGame {
 	}
 
 	private boolean updateCursor(int column, int index, Color color){
-		String number = String.valueOf(Search("C" + column, index));
+		String number = String.valueOf(Search("C" + column, index));	// Updating cursor
 
 		if(color == Color.PINK){ //Empty column selection
 			number = "|";
