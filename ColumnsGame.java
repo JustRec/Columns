@@ -225,6 +225,8 @@ public class ColumnsGame {
 							target_column = 0;
 
 							checkColumnForSets(gameScreen);
+
+							printGameScreen(cn);
 						}
 					}
 
@@ -232,7 +234,20 @@ public class ColumnsGame {
 
 						if (cursor.getX() == 1) {
 
-							if (gameScreen.lastNodeNumber(0) + 1 == boxNumber || gameScreen.lastNodeNumber(0) - 1 == boxNumber
+							if (gameScreen.lastNodeNumber(0) == 0) {
+								if (boxNumber == 1 || boxNumber == 10) {
+
+									gameScreen.addCard("C1", boxNumber);
+									transferCount += 1;
+									isBoxNumberPlaced = true;
+									boxNumber = 0;
+
+									printGameScreen(cn);
+
+								}
+							}
+
+							else if (gameScreen.lastNodeNumber(0) + 1 == boxNumber || gameScreen.lastNodeNumber(0) - 1 == boxNumber
 									|| gameScreen.lastNodeNumber(0) == boxNumber) {
 
 								gameScreen.addCard("C1", boxNumber);
@@ -248,7 +263,20 @@ public class ColumnsGame {
 
 						else if (cursor.getX() == 2) {
 
-							if (gameScreen.lastNodeNumber(1) + 1 == boxNumber || gameScreen.lastNodeNumber(1) - 1 == boxNumber
+							if (gameScreen.lastNodeNumber(0) == 0) {
+								if (boxNumber == 1 || boxNumber == 10) {
+
+									gameScreen.addCard("C2", boxNumber);
+									transferCount += 1;
+									isBoxNumberPlaced = true;
+									boxNumber = 0;
+
+									printGameScreen(cn);
+
+								}
+							}
+
+							else if (gameScreen.lastNodeNumber(1) + 1 == boxNumber || gameScreen.lastNodeNumber(1) - 1 == boxNumber
 									|| gameScreen.lastNodeNumber(1) == boxNumber) {
 
 								gameScreen.addCard("C2", boxNumber);
@@ -264,7 +292,20 @@ public class ColumnsGame {
 
 						else if (cursor.getX() == 3) {
 
-							if (gameScreen.lastNodeNumber(2) + 1 == boxNumber || gameScreen.lastNodeNumber(2) - 1 == boxNumber
+							if (gameScreen.lastNodeNumber(0) == 0) {
+								if (boxNumber == 1 || boxNumber == 10) {
+
+									gameScreen.addCard("C3", boxNumber);
+									transferCount += 1;
+									isBoxNumberPlaced = true;
+									boxNumber = 0;
+
+									printGameScreen(cn);
+
+								}
+							}
+
+							else if (gameScreen.lastNodeNumber(2) + 1 == boxNumber || gameScreen.lastNodeNumber(2) - 1 == boxNumber
 									|| gameScreen.lastNodeNumber(2) == boxNumber) {
 
 								gameScreen.addCard("C3", boxNumber);
@@ -280,7 +321,20 @@ public class ColumnsGame {
 
 						else if (cursor.getX() == 4) {
 
-							if (gameScreen.lastNodeNumber(3) + 1 == boxNumber || gameScreen.lastNodeNumber(3) - 1 == boxNumber
+							if (gameScreen.lastNodeNumber(0) == 0) {
+								if (boxNumber == 1 || boxNumber == 10) {
+
+									gameScreen.addCard("C4", boxNumber);
+									transferCount += 1;
+									isBoxNumberPlaced = true;
+									boxNumber = 0;
+
+									printGameScreen(cn);
+
+								}
+							}
+
+							else if (gameScreen.lastNodeNumber(3) + 1 == boxNumber || gameScreen.lastNodeNumber(3) - 1 == boxNumber
 									|| gameScreen.lastNodeNumber(3) == boxNumber) {
 
 								gameScreen.addCard("C4", boxNumber);
@@ -296,7 +350,20 @@ public class ColumnsGame {
 
 						else if (cursor.getX() == 5) {
 
-							if (gameScreen.lastNodeNumber(4) + 1 == boxNumber || gameScreen.lastNodeNumber(4) - 1 == boxNumber
+							if (gameScreen.lastNodeNumber(0) == 0) {
+								if (boxNumber == 1 || boxNumber == 10) {
+
+									gameScreen.addCard("C5", boxNumber);
+									transferCount += 1;
+									isBoxNumberPlaced = true;
+									boxNumber = 0;
+
+									printGameScreen(cn);
+
+								}
+							}
+
+							else if (gameScreen.lastNodeNumber(4) + 1 == boxNumber || gameScreen.lastNodeNumber(4) - 1 == boxNumber
 									|| gameScreen.lastNodeNumber(4) == boxNumber) {
 
 								gameScreen.addCard("C5", boxNumber);

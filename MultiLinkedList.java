@@ -115,9 +115,17 @@ public class MultiLinkedList {
 
         CardNode tempCardNode = tempColumnNode.getRight();
 
-        while (tempCardNode.getNext() != null) {
+        if (tempCardNode != null) {
 
-            tempCardNode = tempCardNode.getNext();
+            while (tempCardNode.getNext() != null) {
+
+                tempCardNode = tempCardNode.getNext();
+            }
+        }
+
+
+        if (tempCardNode == null) {
+            return 0;
         }
 
         return tempCardNode.getCardName();
