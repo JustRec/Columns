@@ -102,8 +102,8 @@ public class ColumnsGame {
 
 		}
 
-
 		printGameScreen(cn);
+
 		
 		Play();
 
@@ -220,6 +220,8 @@ public class ColumnsGame {
 						Transfer();
 						selected_column = 0;
 						target_column = 0;
+
+						checkColumnForSets(gameScreen);
 					}
 				}
 				else if(rkey == KeyEvent.VK_B){}
@@ -243,6 +245,24 @@ public class ColumnsGame {
 	private void updateInfo(){
 	cn.getTextWindow().setCursorPosition(40, 3);
 	System.out.println(transferCount);
+	}
+
+	private void checkColumnForSets(MultiLinkedList gameScreen) {
+
+		for (int i = 0; i < 5; i++) {
+
+			if (gameScreen.columnSize(i) == 10) {
+
+				if (gameScreen.isColumnOrderedSet(i)) {
+
+					for (int j = 0; j <= 10; j++) {
+
+						gameScreen.deleteNode(i+1, j+1);
+					}
+				}
+			}
+		}
+
 	}
 
 	private Color currentTileColor(){

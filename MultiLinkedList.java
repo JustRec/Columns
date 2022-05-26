@@ -129,4 +129,61 @@ public class MultiLinkedList {
         else
             previousNode.setNext(tempNode2.getNext());
     }
+
+    public int columnSize (int columnIndex) {
+        int cardCount = 0;
+
+        ColumnNode tempColumnNode = head;
+
+        for (int i = 0; i < columnIndex; i++) {
+
+            tempColumnNode = tempColumnNode.getDown();
+        }
+
+        CardNode tempCardNode = tempColumnNode.getRight();
+
+        while (tempCardNode != null) {
+
+            cardCount += 1;
+            tempCardNode = tempCardNode.getNext();
+        }
+
+        return cardCount;
+    }
+
+    public boolean isColumnOrderedSet(int columnIndex) {
+
+        boolean isOrdered = true;
+
+        ColumnNode tempColumnNode = head;
+
+        for (int i = 0; i < columnIndex; i++) {
+
+            tempColumnNode = tempColumnNode.getDown();
+        }
+
+        CardNode tempCardNode = tempColumnNode.getRight();
+
+        for (int i = 1; i <= 10; i++) {
+
+            if (!(Integer.toString(tempCardNode.getCardName())).equals(Integer.toString(i))) {
+
+                isOrdered = false;
+
+                tempCardNode = tempCardNode.getNext();
+            }
+        }
+
+        tempCardNode = tempColumnNode.getRight();
+
+        for (int i = 10; i >= 1 ; i++) {
+
+            if (!(Integer.toString(tempCardNode.getCardName())).equals(Integer.toString(i))) {
+
+                isOrdered = false;
+            }
+        }
+
+        return isOrdered;
+    }
 }
