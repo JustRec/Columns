@@ -67,6 +67,15 @@ public class SingleLinkedList {
         return count;
     }
 
+    public SingleLinkedListNode getFirstNode() {
+
+        SingleLinkedListNode tempNode = head;
+
+        head = tempNode.getLink();
+
+        return tempNode;
+    }
+
 
 
 

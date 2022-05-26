@@ -104,6 +104,26 @@ public class MultiLinkedList {
 
     }
 
+    public int lastNodeNumber(int columnIndex) {
+
+        ColumnNode tempColumnNode = head;
+
+        for (int i = 0; i < columnIndex; i++) {
+
+            tempColumnNode = tempColumnNode.getDown();
+        }
+
+        CardNode tempCardNode = tempColumnNode.getRight();
+
+        while (tempCardNode.getNext() != null) {
+
+            tempCardNode = tempCardNode.getNext();
+        }
+
+        return tempCardNode.getCardName();
+
+
+    }
     public void deleteNode(int columnIndex, int cardIndex) {
 
         ColumnNode tempNode = head;
@@ -176,7 +196,7 @@ public class MultiLinkedList {
 
         tempCardNode = tempColumnNode.getRight();
 
-        for (int i = 10; i >= 1 ; i++) {
+        for (int i = 10; i >= 1 ; i--) {
 
             if (!(Integer.toString(tempCardNode.getCardName())).equals(Integer.toString(i))) {
 

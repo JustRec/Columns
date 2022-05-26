@@ -36,6 +36,10 @@ public class ColumnsGame {
 	int playerScore = 0;
 	int boxNumber = 0;
 
+	boolean isBoxNumberSelected = false;
+	boolean isBoxNumberPlaced = true;
+	CardNode boxCard;
+
 	Cursor cursor = new Cursor();
 
 	private int keypr;
@@ -182,6 +186,9 @@ public class ColumnsGame {
 				}
 
 				else if(rkey == KeyEvent.VK_Z){
+
+					isBoxNumberSelected = false;
+
 					if(selected_column != 0){ //Reset the previous selection
 						for (int i = 1; i < 10; i++) {
 							if(!updateCursor(selected_column, i, Color.WHITE))
@@ -208,16 +215,125 @@ public class ColumnsGame {
 				}
 
 				else if(rkey == KeyEvent.VK_X){
-					target_column = cursor.getX();
-					if(selected_column != target_column && selected_column != 0){
-						Transfer();
-						selected_column = 0;
-						target_column = 0;
 
-						checkColumnForSets(gameScreen);
+					if (!isBoxNumberSelected) {
+
+						target_column = cursor.getX();
+						if(selected_column != target_column && selected_column != 0){
+							Transfer();
+							selected_column = 0;
+							target_column = 0;
+
+							checkColumnForSets(gameScreen);
+						}
 					}
+
+					else {
+
+						if (cursor.getX() == 1) {
+
+							if (gameScreen.lastNodeNumber(0) + 1 == boxNumber || gameScreen.lastNodeNumber(0) - 1 == boxNumber
+									|| gameScreen.lastNodeNumber(0) == boxNumber) {
+
+								gameScreen.addCard("C1", boxNumber);
+								transferCount += 1;
+								isBoxNumberPlaced = true;
+								boxNumber = 0;
+
+								printGameScreen(cn);
+							}
+
+
+						}
+
+						else if (cursor.getX() == 2) {
+
+							if (gameScreen.lastNodeNumber(1) + 1 == boxNumber || gameScreen.lastNodeNumber(1) - 1 == boxNumber
+									|| gameScreen.lastNodeNumber(1) == boxNumber) {
+
+								gameScreen.addCard("C2", boxNumber);
+								transferCount += 1;
+								isBoxNumberPlaced = true;
+								boxNumber = 0;
+
+								printGameScreen(cn);
+							}
+
+
+						}
+
+						else if (cursor.getX() == 3) {
+
+							if (gameScreen.lastNodeNumber(2) + 1 == boxNumber || gameScreen.lastNodeNumber(2) - 1 == boxNumber
+									|| gameScreen.lastNodeNumber(2) == boxNumber) {
+
+								gameScreen.addCard("C3", boxNumber);
+								transferCount += 1;
+								isBoxNumberPlaced = true;
+								boxNumber = 0;
+
+								printGameScreen(cn);
+							}
+
+
+						}
+
+						else if (cursor.getX() == 4) {
+
+							if (gameScreen.lastNodeNumber(3) + 1 == boxNumber || gameScreen.lastNodeNumber(3) - 1 == boxNumber
+									|| gameScreen.lastNodeNumber(3) == boxNumber) {
+
+								gameScreen.addCard("C4", boxNumber);
+								transferCount += 1;
+								isBoxNumberPlaced = true;
+								boxNumber = 0;
+
+								printGameScreen(cn);
+							}
+
+
+						}
+
+						else if (cursor.getX() == 5) {
+
+							if (gameScreen.lastNodeNumber(4) + 1 == boxNumber || gameScreen.lastNodeNumber(4) - 1 == boxNumber
+									|| gameScreen.lastNodeNumber(4) == boxNumber) {
+
+								gameScreen.addCard("C5", boxNumber);
+
+								transferCount += 1;
+								isBoxNumberPlaced = true;
+								boxNumber = 0;
+
+								printGameScreen(cn);
+							}
+
+
+						}
+
+					}
+
 				}
-				else if(rkey == KeyEvent.VK_B){}
+				else if(rkey == KeyEvent.VK_B){
+
+					isBoxNumberSelected = true;
+
+					if (isBoxNumberPlaced) {
+
+						boxNumber = (int)box.getFirstNode().getData();
+
+						printGameScreen(cn);
+
+						isBoxNumberPlaced = false;
+					}
+
+
+
+
+
+
+
+				}
 				updateInfo();
 
 			}
