@@ -1,5 +1,14 @@
 public class DoubleLinkedList {
 	DoubleLinkedListNode head;
+
+	public DoubleLinkedListNode getHead() {
+		return this.head;
+	}
+
+	public void setHead(DoubleLinkedListNode head) {
+		this.head = head;
+	}
+
 	DoubleLinkedListNode tail;
 	DoubleLinkedListNode head2;
 	DoubleLinkedListNode tail2;
@@ -204,4 +213,27 @@ public class DoubleLinkedList {
 		}
 	}
 
+	public int deleteBoardData(Object data) { // Delete one scoreboard element from list
+        if (head == null) {
+            System.out.println("List is empty");
+        } 
+        else {
+            while ((ScoreboardData) head.getData() == (ScoreboardData) data) {
+                head = head.getNext();
+                return 0;
+            }
+
+            DoubleLinkedListNode previous = null;
+            DoubleLinkedListNode temp = head;
+            while (temp != null) {
+                if ((ScoreboardData) temp.getData() == (ScoreboardData) data) {
+                    previous.setNext(temp.getNext());
+                    return 0;
+                }
+                previous = temp;
+                temp = temp.getNext();
+            }
+        }
+        return 0;
+    }
 }

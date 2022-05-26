@@ -4,9 +4,11 @@ import enigma.core.Enigma;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.Color;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Locale;
 import java.util.Random;
@@ -106,23 +108,8 @@ public class ColumnsGame {
 
 		
 		Play();
-
-		reading_scores(dll_scores, "highscore.txt");
-		reading_names(dll_names, "highscore.txt");
-		DoubleLinkedListNode temp = dll_scores.head;
-		DoubleLinkedListNode temp2 = dll_names.head;
-		while (temp != null) {
-			dll_highscore.sortedAdd(temp.getData(), temp2.getData());
-			temp = temp.getNext();
-			temp2 = temp2.getNext();
-		}
-		writing(dll_highscore,"highscore.txt");
-
 		Scoreboard();
 
-	}
-	private void Scoreboard(){
-		
 	}
 
 	private void Play(){
@@ -433,76 +420,6 @@ public class ColumnsGame {
 
 	}
 
-	public DoubleLinkedList reading_names(DoubleLinkedList dll, String string) {
-		try {
-			File file = new File(string);
-			Scanner scan = new Scanner(file);
-
-			while (scan.hasNextLine()) {
-				String line = scan.nextLine();
-				line = line.toUpperCase(Locale.ENGLISH);
-				int space = (line.indexOf(" "));
-				dll.add(line.substring(0, space));
-			}
-			scan.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("An error occurred.");
-			e.printStackTrace();
-		}
-
-		return dll;
-	}
-
-	public DoubleLinkedList reading_scores(DoubleLinkedList dll, String string) {
-
-		try {
-			File file = new File(string);
-			Scanner scan = new Scanner(file);
-
-			while (scan.hasNextLine()) {
-				String line = scan.nextLine();
-				line = line.toUpperCase(Locale.ENGLISH);
-				int space = (line.indexOf(" "));
-				dll.add(Integer.parseInt(line.substring(space + 1)));
-			}
-			scan.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("An error occurred.");
-			e.printStackTrace();
-		}
-
-		return dll;
-	}
-	public void writing(DoubleLinkedList dll, String string) {
-		File file = new File(string);
-		try {
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-			FileWriter fw = new FileWriter(file, false);
-			BufferedWriter bw = new BufferedWriter(fw);
-
-			DoubleLinkedListNode temp = dll.tail;
-			DoubleLinkedListNode temp2 = dll.tail2;
-			int count = 0;
-			while (count < dll.size()) {
-
-				String table_score = String.valueOf(temp.getData());
-				temp = temp.getPrev();
-				String table_name = temp2.getData().toString();
-				temp2 = temp2.getPrev();
-
-				bw.write(table_name + " " + table_score + "\n");
-				count++;
-
-			}
-			bw.close();
-
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-
-	}
 
 	private void deleteScreen() {
 
@@ -513,6 +430,77 @@ public class ColumnsGame {
 		}
 
 		cn.getTextWindow().setCursorPosition(0,0);
+	}
+
+	private void Scoreboard(){
+		DoubleLinkedList scores = new DoubleLinkedList();
+		BufferedReader reader;
+
+		try {
+			reader = new BufferedReader(new FileReader("highscore.txt"));
+			String[] name = (reader.readLine()).split(" ");
+			String[] names = new String[3];
+			names[0] = name[0];
+			names[1] = name[1];
+			for (int i = 2; i < name.length; i++) {
+				if(!name[i].equals(""))
+					names[2] = name[i];
+			}
+
+			while (name != null) { // Add the current line into list until there is no new line
+				scores.add(new ScoreboardData(names[0] + names[1], Double.parseDouble(names[2])));
+				String str = reader.readLine();
+				if (str == null)
+					break;
+				name = str.split(" ");
+				names[0] = name[0];
+				names[1] = name[1];
+				for (int i = 2; i < name.length; i++) {
+					if(!name[i].equals(""))
+						names[2] = name[i];
+				}
+			}
+			reader.close();
+
+			DoubleLinkedListNode previous = scores.getHead();
+			DoubleLinkedListNode temp = previous.getNext();
+			boolean flag = false;
+
+			while (!flag) {
+				previous = scores.getHead();
+				temp = previous.getNext();
+				flag = true;
+				while (temp != null) {
+					double temp_score = ((ScoreboardData) temp.getData()).getScore();
+					double previous_score = ((ScoreboardData) previous.getData()).getScore();
+
+					if (previous_score < temp_score) { // Move the previous number to the last if it's lesser than its link
+						scores.deleteBoardData((previous.getData()));
+						scores.add(previous.getData());
+						flag = false; // Save the loop if there is still some changes
+						break;
+					}
+					previous = temp;
+					temp = temp.getNext();
+				}
+			}
+			File writer = new File("highscore.txt");
+			writer.delete();
+			writer.createNewFile();
+			FileWriter fw = new FileWriter("highscore.txt", true);
+
+			temp = scores.getHead();
+			while(temp!= null){
+				double user_score = ((ScoreboardData) temp.getData()).getScore();
+				String user_name = ((ScoreboardData) temp.getData()).getName();
+
+				fw.write(user_name + ":  " + user_score + "\n");
+				temp = temp.getNext();
+			}
+			fw.close();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	
