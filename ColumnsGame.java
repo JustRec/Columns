@@ -22,12 +22,6 @@ public class ColumnsGame {
 
 	SingleLinkedList box = new SingleLinkedList();
 
-	SingleLinkedList column1 = new SingleLinkedList();
-	SingleLinkedList column2 = new SingleLinkedList();
-	SingleLinkedList column3 = new SingleLinkedList();		// Creating Columns
-	SingleLinkedList column4 = new SingleLinkedList();
-	SingleLinkedList column5 = new SingleLinkedList();
-
 	DoubleLinkedList dll_scores = new DoubleLinkedList();
 	DoubleLinkedList dll_names = new DoubleLinkedList();
 	DoubleLinkedList dll_highscore = new DoubleLinkedList();
@@ -37,6 +31,8 @@ public class ColumnsGame {
 	int boxNumber = 0;
 
 	int setCount = 0;
+
+	int endGameScore = 0;
 
 	boolean isBoxNumberSelected = false;
 	boolean isBoxNumberPlaced = true;
@@ -67,7 +63,7 @@ public class ColumnsGame {
 
 		gameScreen.addColumn("C1");
 		gameScreen.addColumn("C2");
-		gameScreen.addColumn("C3");
+		gameScreen.addColumn("C3");		// Creating Columns
 		gameScreen.addColumn("C4");
 		gameScreen.addColumn("C5");
 
@@ -80,30 +76,30 @@ public class ColumnsGame {
 
 			randomCardIndex = rnd.nextInt(cards.length);
 
-			if (column1.size() < 6) {
+			if (gameScreen.columnSize(0) < 6) {
 
 				gameScreen.addCard("C1", cards[randomCardIndex]);
-				column1.add(cards[randomCardIndex]); }
+				}
 
-			else if (column2.size() < 6) {
+			else if (gameScreen.columnSize(1) < 6) {
 
 				gameScreen.addCard("C2", cards[randomCardIndex]);
-				column2.add(cards[randomCardIndex]); }		// Adding cards to columns randomly until each one has 6 cards
+			}																// Adding cards to columns randomly until each one has 6 cards
 
-			else if (column3.size() < 6) {
+			else if (gameScreen.columnSize(2) < 6) {
 
 				gameScreen.addCard("C3", cards[randomCardIndex]);
-				column3.add(cards[randomCardIndex]); }
+			}
 
-			else if (column4.size() < 6) {
+			else if (gameScreen.columnSize(3) < 6) {
 
 				gameScreen.addCard("C4", cards[randomCardIndex]);
-				column4.add(cards[randomCardIndex]); }
+			}
 
-			else if (column5.size() < 6) {
+			else if (gameScreen.columnSize(4) < 6) {
 
 				gameScreen.addCard("C5", cards[randomCardIndex]);
-				column5.add(cards[randomCardIndex]); }
+			}
 
 			else { box.add(cards[randomCardIndex]); }		// Adding remaining cards to box
 
@@ -235,7 +231,7 @@ public class ColumnsGame {
 						}
 					}
 
-					else {
+					else {	// Adding box card to game screen with respect to cursor position
 
 						if (cursor.getX() == 1) {
 
@@ -386,6 +382,7 @@ public class ColumnsGame {
 					}
 
 				}
+				// revealing the new card
 				else if(rkey == KeyEvent.VK_B){
 
 					isBoxNumberSelected = true;
@@ -406,6 +403,12 @@ public class ColumnsGame {
 
 
 				}
+
+				else if(rkey == KeyEvent.VK_E) {
+
+					isGameContinue = false;
+				}
+
 				updateInfo();
 
 			}
@@ -416,6 +419,8 @@ public class ColumnsGame {
 				isGameContinue = false;
 			}
 		}
+
+		endGameScore = 100*setCount + (playerScore/transferCount);
 	}
 	private boolean isMoveLegal(int modifX, int modifY){
 		updateCursor(cursor.getX(), cursor.getY(), currentTileColor()); //Reset the current cursor location
