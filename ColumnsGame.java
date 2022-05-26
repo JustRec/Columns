@@ -239,8 +239,7 @@ public class ColumnsGame {
 			if(Math.abs(modifX) == 1){
 				if(Search("C" + (cursor.getX() + (2 * modifX)), cursor.getY()) != 404){
 					cursor.setX(cursor.getX() + modifX);
-					updateCursor(cursor.getX(), cursor.getY(), Color.PINK);	
-					cursor.setX(cursor.getX() + modifX);
+					updateCursor(cursor.getX(), cursor.getY(), Color.PINK);
 				}
 			}
 			updateCursor(cursor.getX(), cursor.getY(), PURPLE);
@@ -282,7 +281,7 @@ public class ColumnsGame {
 
 	private int Search(String column, int index){
 
-		if(column.equals("C0") || column.equals("C6"))
+		if(column.equals("C-1") || column.equals("C7"))
 			return 404;
 		ColumnNode temp = gameScreen.head;
 		CardNode temp2 = temp.getRight();
@@ -307,7 +306,7 @@ public class ColumnsGame {
 	private boolean updateCursor(int column, int index, Color color){
 		String number = String.valueOf(Search("C" + column, index));
 		if(color == Color.PINK){
-			number = "D";
+			number = "|";
 		}
 		if(number.equals("404"))
 			return false;	
