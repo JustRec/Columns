@@ -118,6 +118,11 @@ public class ColumnsGame {
 		}
 		writing(dll_highscore,"highscore.txt");
 
+		Scoreboard();
+
+	}
+	private void Scoreboard(){
+		
 	}
 
 	private void Play(){
@@ -146,7 +151,7 @@ public class ColumnsGame {
 				if(rkey == KeyEvent.VK_RIGHT){
 					if(isMoveLegal(1,0)){
 						cursor.Move(1);
-						updateCursor(cursor.getX(), cursor.getY(), PURPLE);
+						updateCursor(cursor.getX(), cursor.getY(), PURPLE); //Move cursor to the next number
 					}
 				}
 				else if(rkey == KeyEvent.VK_LEFT){
@@ -164,7 +169,7 @@ public class ColumnsGame {
 				else if(rkey == KeyEvent.VK_DOWN){
 					ColumnNode temp = gameScreen.head;
 
-					while (temp != null){
+					while (temp != null){ //Check the number under the cursor
 						String column = "C" + cursor.getX();
 						if (column.equals(temp.getColumnName())){
 							CardNode temp2 = temp.getRight();
@@ -190,20 +195,21 @@ public class ColumnsGame {
 				}
 
 				else if(rkey == KeyEvent.VK_Z){
-					if(selected_column != 0){
+					if(selected_column != 0){ //Reset the previous selection
 						for (int i = 1; i < 10; i++) {
 							if(!updateCursor(selected_column, i, Color.WHITE))
 								break;
 						}
 					}
-					selected_column = cursor.getX();
+
+					selected_column = cursor.getX();//Color the new selection
 					selected_index = cursor.getY();
-					for (int i = cursor.getY(); i < 10; i++) {
+					for (int i = cursor.getY(); i < 10; i++) { 
 						if(!updateCursor(cursor.getX(), i, Color.red))
 							break;
 					}
 					
-					if(cursor.getY() == 1)
+					if(cursor.getY() == 1) //Cursors new random location after selection
 						cursor.setX(cursor.getX() - 1);
 					else{
 						cursor.setY(cursor.getY() - 1);
@@ -233,9 +239,9 @@ public class ColumnsGame {
 		}
 	}
 	private boolean isMoveLegal(int modifX, int modifY){
-		updateCursor(cursor.getX(), cursor.getY(), currentTileColor());
+		updateCursor(cursor.getX(), cursor.getY(), currentTileColor()); //Reset the current cursor location
 
-		if(Search("C" + (cursor.getX() + modifX), cursor.getY()) == 404){
+		if(Search("C" + (cursor.getX() + modifX), cursor.getY()) == 404){ //Skip the empty column
 			if(Math.abs(modifX) == 1){
 				if(Search("C" + (cursor.getX() + (2 * modifX)), cursor.getY()) != 404){
 					cursor.setX(cursor.getX() + modifX);
@@ -274,15 +280,14 @@ public class ColumnsGame {
 	private Color currentTileColor(){
 		if(cursor.getX() == selected_column && cursor.getY() >= selected_index)
 			return Color.red;
-		/*else if(cursor.getX() == target_column)
-			return Color.blue;*/
 		return Color.white;
 	}
 
 	private int Search(String column, int index){
 
-		if(column.equals("C-1") || column.equals("C7"))
+		if(column.equals("C-1") || column.equals("C7")) //Return error code if there is no number
 			return 404;
+		
 		ColumnNode temp = gameScreen.head;
 		CardNode temp2 = temp.getRight();
 		while (temp != null){
@@ -305,10 +310,11 @@ public class ColumnsGame {
 
 	private boolean updateCursor(int column, int index, Color color){
 		String number = String.valueOf(Search("C" + column, index));
-		if(color == Color.PINK){
+
+		if(color == Color.PINK){ //Empty column selection
 			number = "|";
 		}
-		if(number.equals("404"))
+		if(number.equals("404")) //Escape error
 			return false;	
 		int x = 7 + ((column - 1) * 3);
 		int y = 5 + (index - 1 );
@@ -337,7 +343,7 @@ public class ColumnsGame {
 				}
 				last_node = temp2.getCardName();
 				while(temp2 != null){
-					queue.enqueue(temp2.getCardName());
+					queue.enqueue(temp2.getCardName());//Load the queue
 					queue_size++;
 					temp2 = temp2.getNext();
 				}
@@ -356,7 +362,7 @@ public class ColumnsGame {
 					previous = temp2.getCardName();
 					temp2 = temp2.getNext();
 				}
-				if(Math.abs(last_node - previous) == 1){
+				if(Math.abs(last_node - previous) == 1){ // Last if check
 					while(!queue.isEmpty()){
 						gameScreen.addCard("C" + target_column, (Integer)queue.dequeue());
 					}
