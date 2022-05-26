@@ -1,7 +1,3 @@
-import enigma.core.Enigma;
-
-import java.io.Console;
-
 public class SingleLinkedList {
 
     SingleLinkedListNode head;

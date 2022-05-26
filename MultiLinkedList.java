@@ -1,6 +1,3 @@
-import enigma.core.Enigma;
-import java.io.Console;
-
 public class MultiLinkedList {
 
     ColumnNode head;
@@ -112,7 +109,7 @@ public class MultiLinkedList {
         ColumnNode tempNode = head;
 
 
-        for (int i = 0; i < columnIndex; i++) {
+        for (int i = 0; i < columnIndex - 1; i++) {
 
             tempNode = tempNode.getDown();
 
@@ -121,12 +118,10 @@ public class MultiLinkedList {
         CardNode tempNode2 = tempNode.getRight();
         CardNode previousNode = null;
 
-        for (int i = 0; i < cardIndex; i++) {
+        for (int i = 0; i < cardIndex - 1; i++) {
 
             previousNode = tempNode2;
             tempNode2 = tempNode2.getNext();
-
-
         }
 
         previousNode.setNext(tempNode2.getNext());

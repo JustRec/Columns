@@ -1,8 +1,6 @@
 import enigma.console.Console;
 import enigma.console.TextAttributes;
 import enigma.core.Enigma;
-import enigma.event.TextMouseEvent;
-import enigma.event.TextMouseListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.Color;
@@ -38,9 +36,6 @@ public class ColumnsGame {
 
 	Cursor cursor = new Cursor();
 
-	private int mousepr;
-	private int mousex;
-	private int mousey;
 	private int keypr;
 	private int rkey;
 
@@ -126,22 +121,6 @@ public class ColumnsGame {
 	}
 
 	private void Play(){
-		TextMouseListener tmlistener = new TextMouseListener() { // Mouse event listener
-			
-            public void mouseClicked(TextMouseEvent arg0) {
-            }
-            public void mousePressed(TextMouseEvent arg0) {
-                if (mousepr == 0) {
-                    mousepr = 1;
-                    mousex = arg0.getX();
-                    mousey = arg0.getY();
-                }
-            }
-            public void mouseReleased(TextMouseEvent arg0) {
-            }
-        };
-        cn.getTextWindow().addTextMouseListener(tmlistener);
-
         KeyListener klistener = new KeyListener() { // Keyboard event listener
             public void keyTyped(KeyEvent e) {}
             public void keyPressed(KeyEvent e) {
@@ -240,11 +219,18 @@ public class ColumnsGame {
 					}
 				}
 				else if(rkey == KeyEvent.VK_B){}
+				updateInfo();
 
 			}
 			keypr = 0;
 			
 		}
+	}
+
+
+	private void updateInfo(){
+	cn.getTextWindow().setCursorPosition(40, 3);
+	System.out.println(transferCount);
 	}
 
 	private Color currentTileColor(){
@@ -270,7 +256,7 @@ public class ColumnsGame {
 			temp2 = temp.getRight();
 		}
 		if(temp2 == null)
-			return 404;
+			return 404; //null error code
 		return (Integer) temp2.getCardName();
 	}
 
@@ -293,6 +279,7 @@ public class ColumnsGame {
 	private void Transfer(){
 		ColumnNode temp = gameScreen.head;
 		int last_node = 0;
+		int queue_size = 0;
 		Queue queue = new Queue(10);
 
 		while (temp != null){
@@ -305,6 +292,7 @@ public class ColumnsGame {
 				last_node = temp2.getCardName();
 				while(temp2 != null){
 					queue.enqueue(temp2.getCardName());
+					queue_size++;
 					temp2 = temp2.getNext();
 				}
 				break;
@@ -326,6 +314,10 @@ public class ColumnsGame {
 					while(!queue.isEmpty()){
 						gameScreen.addCard("C" + target_column, (Integer)queue.dequeue());
 					}
+					for (int i = 0; i < queue_size; i++) {
+						gameScreen.deleteNode(selected_column, selected_index);
+					}
+					transferCount++;
 					break;
 				}
 				
