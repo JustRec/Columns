@@ -144,19 +144,22 @@ public class ColumnsGame {
 
 			if(keypr == 1){
 				if(rkey == KeyEvent.VK_RIGHT){
-					updateCursor(cursor.getX(), cursor.getY(), currentTileColor());
-					cursor.Move(1);
-					updateCursor(cursor.getX(), cursor.getY(), PURPLE);
+					if(isMoveLegal(1,0)){
+						cursor.Move(1);
+						updateCursor(cursor.getX(), cursor.getY(), PURPLE);
+					}
 				}
 				else if(rkey == KeyEvent.VK_LEFT){
-					updateCursor(cursor.getX(), cursor.getY(), currentTileColor());
-					cursor.Move(2);
-					updateCursor(cursor.getX(), cursor.getY(), PURPLE);
+					if(isMoveLegal(-1,0)){
+						cursor.Move(2);
+						updateCursor(cursor.getX(), cursor.getY(), PURPLE);
+					}
 				}
 				else if(rkey == KeyEvent.VK_UP){
-					updateCursor(cursor.getX(), cursor.getY(), currentTileColor());
-					cursor.Move(3);
-					updateCursor(cursor.getX(), cursor.getY(), PURPLE);
+					if(isMoveLegal(0,-1)){
+						cursor.Move(3);
+						updateCursor(cursor.getX(), cursor.getY(), PURPLE);
+					}
 				}
 				else if(rkey == KeyEvent.VK_DOWN){
 					ColumnNode temp = gameScreen.head;
@@ -170,9 +173,10 @@ public class ColumnsGame {
 
 								while(temp2.getNext() != null){
 									if(element == cursor.getY()){
-										updateCursor(cursor.getX(), cursor.getY(), currentTileColor());
-										cursor.Move(4);
-										updateCursor(cursor.getX(), cursor.getY(), PURPLE);
+										if(isMoveLegal(0,+1)){
+											cursor.Move(4);
+											updateCursor(cursor.getX(), cursor.getY(), PURPLE);
+										}
 										break;
 									}
 									temp2 = temp2.getNext();
@@ -226,7 +230,15 @@ public class ColumnsGame {
 			
 		}
 	}
+	private boolean isMoveLegal(int modifX, int modifY){
+		updateCursor(cursor.getX(), cursor.getY(), currentTileColor());
 
+		if(Search("C" + (cursor.getX() + modifX), cursor.getY()) == 404){
+			updateCursor(cursor.getX(), cursor.getY(), PURPLE);
+			return false;
+		}
+		return true;
+	}
 
 	private void updateInfo(){
 	cn.getTextWindow().setCursorPosition(40, 3);
@@ -248,12 +260,15 @@ public class ColumnsGame {
 		while (temp != null){
 			if (column.equals(temp.getColumnName())){
 				for (int i = 0; i < index - 1; i++) {
+					if(temp2 == null)
+						return 404;
 					temp2 = temp2.getNext();
 				}
 				break;
 			}
 			temp = temp.getDown();
-			temp2 = temp.getRight();
+			if(temp!= null)
+				temp2 = temp.getRight();
 		}
 		if(temp2 == null)
 			return 404; //null error code

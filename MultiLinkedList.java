@@ -124,8 +124,9 @@ public class MultiLinkedList {
             tempNode2 = tempNode2.getNext();
         }
 
-        previousNode.setNext(tempNode2.getNext());
-
-
+        if(previousNode == null)
+            tempNode.setRight(null);
+        else
+            previousNode.setNext(tempNode2.getNext());
     }
 }
