@@ -236,6 +236,13 @@ public class ColumnsGame {
 		updateCursor(cursor.getX(), cursor.getY(), currentTileColor());
 
 		if(Search("C" + (cursor.getX() + modifX), cursor.getY()) == 404){
+			if(Math.abs(modifX) == 1){
+				if(Search("C" + (cursor.getX() + (2 * modifX)), cursor.getY()) != 404){
+					cursor.setX(cursor.getX() + modifX);
+					updateCursor(cursor.getX(), cursor.getY(), Color.PINK);	
+					cursor.setX(cursor.getX() + modifX);
+				}
+			}
 			updateCursor(cursor.getX(), cursor.getY(), PURPLE);
 			return false;
 		}
@@ -243,8 +250,8 @@ public class ColumnsGame {
 	}
 
 	private void updateInfo(){
-	cn.getTextWindow().setCursorPosition(40, 3);
-	System.out.println(transferCount);
+		cn.getTextWindow().setCursorPosition(40, 3);
+		System.out.println(transferCount);
 	}
 
 	private void checkColumnForSets(MultiLinkedList gameScreen) {
@@ -275,6 +282,8 @@ public class ColumnsGame {
 
 	private int Search(String column, int index){
 
+		if(column.equals("C0") || column.equals("C6"))
+			return 404;
 		ColumnNode temp = gameScreen.head;
 		CardNode temp2 = temp.getRight();
 		while (temp != null){
@@ -296,9 +305,12 @@ public class ColumnsGame {
 	}
 
 	private boolean updateCursor(int column, int index, Color color){
-		int number = Search("C" + column, index);
-		if(number == 404)
-			return false;
+		String number = String.valueOf(Search("C" + column, index));
+		if(color == Color.PINK){
+			number = "D";
+		}
+		if(number.equals("404"))
+			return false;	
 		int x = 7 + ((column - 1) * 3);
 		int y = 5 + (index - 1 );
 
