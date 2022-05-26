@@ -437,9 +437,9 @@ public class ColumnsGame {
 
 				if (gameScreen.isColumnOrderedSet(i)) {
 
-					for (int j = 0; j <= 10; j++) {
+					for (int j = 0; j < 10; j++) {
 
-						gameScreen.deleteNode(i, j);
+						gameScreen.deleteNode(i+1, j+1);
 					}
 				}
 			}
