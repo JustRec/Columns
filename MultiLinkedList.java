@@ -182,6 +182,7 @@ public class MultiLinkedList {
     public boolean isColumnOrderedSet(int columnIndex) {
 
         boolean isOrdered = true;
+        boolean isReversedOrdered = true;
 
         ColumnNode tempColumnNode = head;
 
@@ -194,24 +195,28 @@ public class MultiLinkedList {
 
         for (int i = 1; i <= 10; i++) {
 
-            if (!(Integer.toString(tempCardNode.getCardName())).equals(Integer.toString(i))) {
+            if (tempCardNode.getCardName() != i) {
 
                 isOrdered = false;
 
-                tempCardNode = tempCardNode.getNext();
             }
+
+            tempCardNode = tempCardNode.getNext();
         }
 
         tempCardNode = tempColumnNode.getRight();
 
         for (int i = 10; i >= 1 ; i--) {
 
-            if (!(Integer.toString(tempCardNode.getCardName())).equals(Integer.toString(i))) {
+            if (tempCardNode.getCardName() != i) {
 
-                isOrdered = false;
+                isReversedOrdered = false;
             }
+
+            tempCardNode = tempCardNode.getNext();
         }
 
-        return isOrdered;
+        return isOrdered || isReversedOrdered;
+
     }
 }

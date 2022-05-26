@@ -439,7 +439,7 @@ public class ColumnsGame {
 
 					for (int j = 0; j <= 10; j++) {
 
-						gameScreen.deleteNode(i+1, j+1);
+						gameScreen.deleteNode(i, j);
 					}
 				}
 			}
